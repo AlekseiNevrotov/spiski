@@ -1,5 +1,5 @@
 {
- "name": "vsadike-form",
+ "name": "spiski-form",
  "version": "1.0.0",
  "dependencies": {
   "axios": "^1.11.0",
@@ -14,14 +14,14 @@
  },
  "repository": {
   "type": "git",
-  "url": "git+https://github.com/AlekseiNevrotov/vsadike.git"
+  "url": "git+https://github.com/AlekseiNevrotov/spiski.git"
  },
  "keywords": [],
  "author": "",
  "license": "ISC",
  "bugs": {
-  "url": "https://github.com/AlekseiNevrotov/vsadike/issues"
+  "url": "https://github.com/AlekseiNevrotov/spiski/issues"
  },
- "homepage": "https://github.com/AlekseiNevrotov/vsadike#readme",
+ "homepage": "https://github.com/AlekseiNevrotov/spiski#readme",
  "description": ""
 }
