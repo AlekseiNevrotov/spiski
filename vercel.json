@@ -3,14 +3,6 @@
   "builds": [
     { "src": "src/app.js", "use": "@vercel/node" }
   ],
-  "headers": [
-    {
-      "source": "/public/(.*)", 
-      "headers": [
-        { "key": "Cache-Control", "value": "max-age=31536000, immutable" }
-      ]
-    }
-  ],
   "routes": [
     { "src": "/.*", "dest": "src/app.js" }
   ]
