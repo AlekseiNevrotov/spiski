@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="robots" content="index,follow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300&family=Ubuntu:wght@300&display=swap" as="style" onload="this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    </noscript>
+  <title>Списки</title>
+  <link rel="icon" href="/favicons/favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/favicons/site.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
+  <meta name="theme-color" content="#121212">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Исследуйте нашу уникальную визуальную инсталляцию, созданную с использованием кода. Погрузитесь в мир интерактивного искусства и технологий." />
+  <meta name="keywords" content="Визуальная инсталляция, интерактивное искусство, код, технологии, цифровое искусство, арт, сайт, художник, дизайн" />
+  <link rel="stylesheet" href="styleflyer.css" />
+</head>
+<body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <div class="three-container">
+    <script src="morfing.js"></script>
+    </div>
+    <div class="overlay">
+      <div class="stripe1"></div>
+      <div class="stripe2"></div>
+      <div class="stripe3"></div>
+      <div class="stripe4"></div>
+      <div class="stripe5"></div>
+        <div class="logo">
+    <img src="logogo.svg" alt="Логотип" style="height: 100%";>
+</div>
+        <div class="date">30.10</div>
+        <div class="name">TECHNO</div>
+        <div class="artists-container">
+        <div class="artist">DJ MUSIC</div>
+        <div class="artist">DJ MUSIC</div>
+        <div class="artist">DJ MUSIC</div>
+    </div>
+        <div class="button-container">
+          <button class="btn">Забронировать стол</button>
+        </div> 
+        <div class="price">500 ₽</div>
+        <div class="fc">18+</div>
+    </div>
+<div id="modal" class="modal">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <p>Здесь будет форма для заполнения</p>
+        <div class="button-container">
+          <button class="btn">Забронировать стол</button>
+        </div>
+    </div>
+</div>
+    <script src="modal.js"></script>
+</body>
+</html>

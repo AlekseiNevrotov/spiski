@@ -1,62 +1,313 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="robots" content="index,follow">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300&family=Ubuntu:wght@300&display=swap" as="style" onload="this.rel='stylesheet'">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Всадике</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     <noscript>
-        <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300&family=Ubuntu:wght@300&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap" rel="stylesheet">
     </noscript>
-  <title>Списки</title>
-  <link rel="icon" href="/favicons/favicon.ico" type="image/x-icon">
-  <link rel="manifest" href="/favicons/site.webmanifest">
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png">
-  <meta name="theme-color" content="#121212">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="Исследуйте нашу уникальную визуальную инсталляцию, созданную с использованием кода. Погрузитесь в мир интерактивного искусства и технологий." />
-  <meta name="keywords" content="Визуальная инсталляция, интерактивное искусство, код, технологии, цифровое искусство, арт, сайт, художник, дизайн" />
-  <link rel="stylesheet" href="styleflyer.css" />
+    <style>
+        :root {
+            --mylogo: #2db799;
+            --accent: #1597ca;
+            --myinterface: #1133ae;
+            --bg: #f6f6f6;
+            --form: #fdfdfd;
+            --input: #ececec;
+            --black: #121212;
+            --grey: #353535;
+            --grey2: #a1a1a1;
+        }
+        *, *::before, *::after {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--bg);
+            margin: 0;
+            padding: 0px;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+        h1 {
+            text-align: center;
+            color: var(--mylogo);
+            font-family: 'Nunito', sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            margin-top: 40px;
+            line-height: 44px;
+            margin-bottom: 32px;
+        }
+        .inline-form {
+            max-width: 400px;
+            margin: auto;
+            background: var(--form);
+            border-radius: 20px; 
+            padding: 28px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+        }
+        .inline-form form input,
+        .inline-form form textarea {
+            width: 100%;
+            height: 60px;
+            line-height: 24px;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            padding: 16px 16px; 
+            background: var(--input); 
+            color: var(--black); 
+            border: 1px solid var(--form); 
+            border-radius: 24px; 
+            font-size: 20px;
+            font-weight: 300;
+            font-family: 'Montserrat', sans-serif;
+            transition: border 0.4s, background 0.4s;
+        }
+        input[type="text"]::placeholder,
+        input[type="tel"]::placeholder {
+            color: var(--grey2);
+        }
+        .inline-form form input:focus,
+        .inline-form form textarea:focus {
+            border: 1px solid var(--myinterface);
+            outline: none;
+        }
+        .inline-form form button[type="submit"] {  
+            width: 100%;
+            height: 52px;
+            color: var(--form); 
+            padding: 0;
+            line-height: 20px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 60px; 
+            background: var(--accent);
+            font-size: 16px;
+            font-weight: 300;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            margin-top: 12px; 
+            transition: background 0.4s; 
+            font-family: 'Montserrat', sans-serif;
+            position: relative; 
+            overflow: hidden;
+        }
+        .inline-form form button[type="submit"]:hover {
+            background: var(--myinterface);
+        }
+        .inline-form form button[type="submit"]:active {
+            transform: scale(0.96);
+        }
+        .spinner {
+            border: 4px solid var(--bg);
+            border-top: 4px solid var(--myinterface);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+}
+.agreement-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            margin-top: 32px; 
+            text-align: center;
+            font-size: 14px;
+            color: var(--grey2);
+            line-height: 16px;
+        }
+       @keyframes spin {
+ 0% { transform: translate(-50%, -50%) rotate(0deg); }
+ 100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+        @media (max-width: 480px) {
+            body {
+            font-family: 'Montserrat', sans-serif; 
+            background: var(--bg);
+            margin: 0;
+            padding: 0px;
+            position: relative;
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+        }
+        h1 {
+            text-align: center;
+            color: var(--mylogo);
+            font-family: 'Nunito', sans-serif;
+            font-size: 32px;
+            font-weight: 300;
+            margin-top: 40px;
+            line-height: 44px;
+            margin-bottom: 32px;
+        }
+        .inline-form {
+            max-width: 400px;
+            margin: auto;
+            background: var(--form);
+            border-radius: 20px; 
+            padding: 28px; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: relative;
+            width: 100%;
+        }
+        .inline-form form input,
+        .inline-form form textarea {
+            width: 100%;
+            height: 60px;
+            line-height: 24px;
+            margin-top: 0px;
+            margin-bottom: 20px;
+            padding: 16px 16px; 
+            background: var(--input); 
+            color: var(--black); 
+            border: 1px solid var(--form); 
+            border-radius: 24px; 
+            font-size: 20px;
+            font-weight: 300;
+            font-family: 'Montserrat', sans-serif;
+            transition: border 0.4s, background 0.4s;
+        }
+        input[type="text"]::placeholder,
+        input[type="tel"]::placeholder {
+            color: var(--grey2);
+        }
+        .inline-form form input:focus,
+        .inline-form form textarea:focus {
+            border: 1px solid var(--myinterface);
+            outline: none;
+        }
+        .inline-form form button[type="submit"] {  
+            width: 100%;
+            height: 52px;
+            color: var(--form); 
+            padding: 0;
+            line-height: 20px;
+            padding: 16px 32px;
+            border: none;
+            border-radius: 60px; 
+            background: var(--accent);
+            font-size: 16px;
+            font-weight: 300;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 0.04em;
+            margin-top: 12px; 
+            transition: background 0.4s; 
+            font-family: 'Montserrat', sans-serif;
+            position: relative; 
+            overflow: hidden;
+        }
+        .inline-form form button[type="submit"]:hover {
+            background: var(--myinterface);
+        }
+        .inline-form form button[type="submit"]:active {
+            transform: scale(0.96);
+        }
+        .spinner {
+            border: 4px solid var(--bg);
+            border-top: 4px solid var(--myinterface);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            display: none;
+            z-index: 10;
+}
+.agreement-text {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            margin-top: 32px; 
+            text-align: center;
+            font-size: 14px;
+            color: var(--grey2);
+            line-height: 16px;
+        }
+       @keyframes spin {
+ 0% { transform: translate(-50%, -50%) rotate(0deg); }
+ 100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+}
+    </style>
 </head>
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <div class="three-container">
-    <script src="morfing.js"></script>
+    <h1>Запишите ребёнка</h1>
+    <div class="inline-form">
+        <form action="/submit" method="POST" id="myForm">
+            <input type="text" id="surname" name="surname" placeholder="Фамилия" required>
+            <input type="text" id="name" name="name" placeholder="Имя" required>
+            <input type="tel" id="phone" name="phone" placeholder="Телефон родителей" required>
+            <button type="submit" id="submitBtn">
+                <span class="button-text">Отправить</span>
+            </button>
+        </form>
+        <div class="spinner" id="spinner"></div>
     </div>
-    <div class="overlay">
-      <div class="stripe1"></div>
-      <div class="stripe2"></div>
-      <div class="stripe3"></div>
-      <div class="stripe4"></div>
-      <div class="stripe5"></div>
-        <div class="logo">
-    <img src="logogo.svg" alt="Логотип" style="height: 100%";>
-</div>
-        <div class="date">30.10</div>
-        <div class="name">TECHNO</div>
-        <div class="artists-container">
-        <div class="artist">DJ MUSIC</div>
-        <div class="artist">DJ MUSIC</div>
-        <div class="artist">DJ MUSIC</div>
-    </div>
-        <div class="button-container">
-          <button class="btn">Забронировать стол</button>
-        </div> 
-        <div class="price">500 ₽</div>
-        <div class="fc">18+</div>
-    </div>
-<div id="modal" class="modal">
-    <div class="modal-content">
-        <span class="close" id="closeModal">&times;</span>
-        <p>Здесь будет форма для заполнения</p>
-        <div class="button-container">
-          <button class="btn">Забронировать стол</button>
-        </div>
-    </div>
-</div>
-    <script src="modal.js"></script>
+            <div class="agreement-text">Отправляя форму, <br>Вы даёте согласие на обработку <br>персональных данных.</div>
+    <script>
+        const form = document.getElementById('myForm');
+        const spinner = document.getElementById('spinner');
+        form.addEventListener('submit', function(event) {
+            spinner.style.display = 'block';
+        });
+    </script>
+    <script>
+       document.addEventListener('DOMContentLoaded', () => {
+    const phoneInput = document.getElementById('phone');
+    function applyMask(digits) {
+        let output = '+7('; 
+        if (digits.length >= 1) output += digits.substring(0, 3); 
+        if (digits.length >= 3) output += ') '; 
+        if (digits.length >= 4) output += digits.substring(3, 6); 
+        if (digits.length >= 6) output += '–'; 
+        if (digits.length >= 7) output += digits.substring(6, 8); 
+        if (digits.length >= 8) output += '–'; 
+        if (digits.length >= 8) output += digits.substring(8, 10); 
+        return output.trim(); 
+    }
+    phoneInput.addEventListener('input', function(e) {
+        let digits = this.value.replace(/\D/g, '');
+        if (digits.startsWith('7') || digits.startsWith('8')) {
+            digits = digits.slice(1);
+        }
+        digits = digits.slice(0, 10); 
+        this.value = applyMask(digits);
+    });
+    phoneInput.addEventListener('keypress', (event) => {
+        if (!/[0-9]/.test(event.key) && event.key !== 'Backspace') {
+            event.preventDefault();
+        }
+    });
+    const form = phoneInput.closest('form');
+    form.addEventListener('submit', function(e) {
+        let digits = phoneInput.value.replace(/\D/g, '');
+        if (digits.startsWith('7')) {
+            digits = '8' + digits.slice(1);
+        } else if (!digits.startsWith('8')) {
+            digits = '8' + digits;
+        }
+        phoneInput.value = digits;
+    });
+});
+    </script>
 </body>
 </html>
