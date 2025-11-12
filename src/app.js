@@ -12,9 +12,9 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 app.post('/submit', async (req, res) => {
-  const { surname, name, phone } = req.body;
+  const { surname, name } = req.body;
   try {
-    await appendToSheet({ surname, name, phone });
+    await appendToSheet({ surname, name });
     res.redirect(`/submit.html?message=${encodeURIComponent('Форма успешно отправлена! 😊')}`);
   } catch (error) {
     console.error(error);
