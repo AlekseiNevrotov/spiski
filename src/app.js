@@ -15,7 +15,7 @@ app.post('/submit', async (req, res) => {
   const { surname, name } = req.body;
   try {
     await appendToSheet({ surname, name });
-    res.redirect(`/submit.html?message=${encodeURIComponent('Форма успешно отправлена! 😊')}`);
+    res.redirect(`/submit.html?message=${encodeURIComponent('Вы в списках 📝😊')}`);
   } catch (error) {
     console.error(error);
     res.redirect(`/submit.html?message=${encodeURIComponent('Ошибка: ' + error.message)}`);
