@@ -830,109 +830,194 @@
 </head>
 <body>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <div class="three-container">
+    <div class="three-container" style="position: relative; width: 100vw; height: 100vh; background: var(--bg);"></div>
     <script>
       const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-const renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-const container = document.querySelector('.three-container');
-container.appendChild(renderer.domElement);
-const geometry = new THREE.BufferGeometry();
-const positions = [];
-const count = 200;
-const formParams = [
-    { radius: 1.4, wave: 5, useSin: true },   
-    { radius: 1.0, wave: 8, useSin: false },   
-    { radius: 1.2, wave: 3, useSin: true },    
-    { radius: 0.8, wave: 6, useSin: false }    
-];
-const numForms = formParams.length;
-const forms = [];
-const startAngles = []; 
-function getPosition(angle, radius, wave, useSin = true) {
-    const x = radius * Math.cos(angle);
-    const y = radius * Math.sin(angle);
-    const z = useSin ? Math.sin(angle * wave) : Math.cos(angle * wave);
-    return [x, y, z];
-}
-for (let i = 0; i < count; i++) {
-    const angle1 = Math.random() * Math.PI * 2;
-    const angle2 = Math.random() * Math.PI * 2;
-    startAngles.push(angle1, angle2);
-}
-for (let formIndex = 0; formIndex < numForms; formIndex++) {
-    const params = formParams[formIndex];
-    const formPositions = [];
-    for (let i = 0; i < count; i++) {
-        const angle1 = startAngles[i * 2];
-        const angle2 = startAngles[i * 2 + 1];
-        
-        const [x1, y1, z1] = getPosition(angle1, params.radius, params.wave, params.useSin);
-        const [x2, y2, z2] = getPosition(angle2, params.radius, params.wave, params.useSin);
-        
-        formPositions.push(x1, y1, z1, x2, y2, z2);
-    }
-    forms.push(formPositions);
-}
-positions.push(...forms[0]);
-geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
-const lineMaterial = new THREE.LineBasicMaterial({ color: 0x3bca98 });
-const lineSegments = new THREE.LineSegments(geometry, lineMaterial);
-scene.add(lineSegments);
-camera.position.z = 5;
-let currentFormIndex = 0;
-let nextFormIndex = 1;    
-let morphing = false;
-let progress = 0;
-let lastMorphEndTime = 0;
-const morphDuration = 100; 
-const pauseDuration = 2000; 
-function animate() {
-    requestAnimationFrame(animate);
-    lineSegments.rotation.x += 0.01;
-    lineSegments.rotation.y += 0.01;
-    const positionAttribute = lineSegments.geometry.attributes.position.array;
-    const totalCoords = positionAttribute.length;
-    if (morphing) {
-        const deltaTime = 1 / morphDuration;
-        progress += deltaTime;
-        if (progress >= 1) {
-            progress = 1;
-            morphing = false;
-            positions.splice(0, totalCoords, ...forms[nextFormIndex]);
-            currentFormIndex = nextFormIndex;
-            nextFormIndex = (currentFormIndex + 1) % numForms;
-            lastMorphEndTime = performance.now();
-        }
-        const t = Math.sin(progress * Math.PI / 2);
-        for (let i = 0; i < totalCoords; i++) {
-            const startCoord = forms[currentFormIndex][i];
-            const endCoord = forms[nextFormIndex][i];
-            positionAttribute[i] = startCoord * (1 - t) + endCoord * t;
-        }
-    } else {
-        if (performance.now() - lastMorphEndTime > pauseDuration) {
-            morphing = true;
-            progress = 0;
-        }
-    }
-    lineSegments.geometry.attributes.position.needsUpdate = true;
-    renderer.render(scene, camera);
-}
-setTimeout(() => {
-    if (!morphing) {
-        morphing = true;
-        progress = 0;
-        lastMorphEndTime = performance.now() - pauseDuration;
-    }
-}, 2000);
-animate();
-window.addEventListener('resize', () => {
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-});
+      const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      const container = document.querySelector('.three-container');
+      container.appendChild(renderer.domElement);
+      const geometry = new THREE.BufferGeometry();
+      const positions = new Float32Array(200 * 6);
+      const count = 200;
+      const totalCoords = count * 6;
+      const colorsArray = new Float32Array(totalCoords);
+      let baseRadius = 1.2;
+      let baseWave = 5;
+      const timeSpeed = 0.002;
+      function generateEvenAngles(count, timeOffset = 0) {
+          const angles = [];
+          for (let i = 0; i < count; i++) {
+              const baseAngle = (i / count) * Math.PI * 2 + timeOffset;
+              angles.push(baseAngle, baseAngle + Math.PI / 2 + (Math.sin(i * 0.1) * 0.3));
+          }
+          return angles;
+      }
+      function getPosition(angle, radius, wave, useSin = true, time = 0, i = 0, formType = 0, waveMult = 1, noiseAmp = 0, asymX = 1, asymY = 1, subWave = 0) {
+          let rotatedAngle = angle + Math.sin(time * 0.5 + i * 0.01) * 0.2;
+          let x = radius * Math.cos(rotatedAngle);
+          let y = radius * Math.sin(rotatedAngle);
+          let z = useSin ? Math.sin(rotatedAngle * wave * waveMult) * 0.4 : Math.cos(rotatedAngle * wave * waveMult) * 0.4;
+          switch (formType) {
+              case 0:
+                  break;
+              case 1:
+                  rotatedAngle += time * 0.1 * (Math.sin(time * 0.001) + 1);
+                  x = radius * Math.cos(rotatedAngle) * asymX;
+                  y = radius * Math.sin(rotatedAngle) * asymY;
+                  z += Math.sin(rotatedAngle * wave * 2) * 0.2;
+                  break;
+              case 2:
+                  const starN = 3 + Math.sin(time * 0.003) * 4;
+                  const starMod = 1 + Math.sin(rotatedAngle * starN) * 0.3;
+                  x *= starMod * asymX;
+                  y *= starMod * asymY;
+                  z += Math.sin(time * 0.004 + i * 0.05) * 0.3;
+                  break;
+              case 3:
+                  x *= asymX; y *= asymY;
+                  z += Math.sin(rotatedAngle * subWave) * 0.2;
+                  break;
+              case 4:
+                  const chaosNoise = Math.sin(time * 0.005 + i * 0.1) * noiseAmp * 2;
+                  x += Math.cos(rotatedAngle * wave * 3) * chaosNoise;
+                  y += Math.sin(rotatedAngle * wave * 3) * chaosNoise;
+                  z *= 1 + chaosNoise;
+                  break;
+              case 5:
+                  const warp = Math.sin(rotatedAngle * subWave + time * 0.002) * 0.25;
+                  x += warp * asymX;
+                  y += warp * asymY;
+                  z += Math.cos(rotatedAngle * wave * 1.5 + time * 0.001) * 0.3;
+                  break;
+              case 6:
+                  const polyN = 3 + Math.sin(time * 0.002) * 5;
+                  const polyMod = 1 + Math.sin(rotatedAngle * polyN) * 0.4;
+                  x *= polyMod * asymX;
+                  y *= polyMod * asymY;
+                  z += Math.cos(rotatedAngle * polyN * 0.5) * 0.2;
+                  break;
+              case 7:
+                  const power = 1.5 + Math.sin(time * 0.003) * 2.5;
+                  const cx = Math.cos(rotatedAngle); const cy = Math.sin(rotatedAngle);
+                  x = Math.sign(cx) * Math.pow(Math.abs(cx), power) * radius * asymX;
+                  y = Math.sign(cy) * Math.pow(Math.abs(cy), power) * radius * asymY;
+                  z += Math.sin(rotatedAngle * wave) * 0.3 * power / 4;
+                  break;
+              case 8:
+                  const heartT = rotatedAngle + time * 0.004;
+                  const heartScale = 1 + Math.sin(time * 0.008) * 0.1;
+                  x = (16 * Math.pow(Math.sin(heartT), 3)) * heartScale * asymX * 0.08;
+                  y = (13 * Math.cos(heartT) - 5 * Math.cos(3 * heartT) - Math.pow(Math.sin(heartT), 3)) * heartScale * asymY * 0.08;
+                  z += Math.sin(time * 0.005 + i * 0.02) * 0.25 * heartScale;
+                  break;
+              case 9:
+                  const roseK = 4 + Math.sin(time * 0.0025) * 3;
+                  const roseR = Math.cos(roseK * rotatedAngle) * radius * (1 + Math.sin(time * 0.003) * 0.2);
+                  x = roseR * Math.cos(rotatedAngle) * asymX;
+                  y = roseR * Math.sin(rotatedAngle) * asymY;
+                  z += Math.sin(roseK * rotatedAngle * 2) * 0.3;
+                  break;
+              case 10:
+                  const lissA = 3 + Math.sin(time * 0.0015) * 2;
+                  const lissB = 2 + Math.cos(time * 0.0015) * 1;
+                  const phase = time * 0.003 + rotatedAngle;
+                  x = Math.sin(lissA * phase) * radius * asymX;
+                  y = Math.sin(lissB * phase + Math.PI / 2) * radius * asymY;
+                  z += Math.sin(lissA * phase * 2) * 0.4;
+                  break;
+              default:
+                  break;
+          }
+          return [x, y, z];
+      }
+      let time = 0;
+      function updateForm(time) {
+          const radiusOsc = Math.sin(time * 0.003) * 0.4 + baseRadius;
+          const waveOsc = Math.abs(Math.sin(time * 0.002)) * 5 + 3;
+          const waveMultOsc = Math.sin(time * 0.0015) * 4 + 5;
+          const useSinOsc = Math.sin(time * 0.001) > 0;
+          const noiseAmpOsc = Math.abs(Math.sin(time * 0.004)) * 0.3;
+          const asymX = 1 + Math.sin(time * 0.0025) * 0.2;
+          const asymY = 1 + Math.cos(time * 0.0025 + Math.PI/2) * 0.2;
+          const subWaveOsc = Math.sin(time * 0.0035) * 3 + 4;
+          const formType = Math.floor((Math.sin(time * 0.0005) + 1) / 2 * 9.5);
+          const angleOffset = time * 0.5 % (Math.PI * 2);
+          const dynamicAngles = generateEvenAngles(count, angleOffset);
+          let baseHue = (time * 0.0015) % 1;
+          const hueShift1 = Math.sin(time * 0.002) * 0.4;
+          const sat = 0.7 + 0.3 * Math.sin(time * 0.003);
+          const lit = 0.4 + 0.3 * Math.sin(time * 0.004 + formType * 0.2);
+          const formBias = formType / 10 * 0.05;
+          if (Math.floor(time / 50) !== Math.floor((time-1) / 50)) {
+              console.log('Time:', (time * timeSpeed).toFixed(2), 'FormType:', formType, 'BaseHue:', baseHue.toFixed(2), 'Sat:', sat.toFixed(2), 'Lit:', lit.toFixed(2));
+          }
+          for (let i = 0; i < count; i++) {
+              const angle1 = dynamicAngles[i * 2];
+              const angle2 = dynamicAngles[i * 2 + 1];
+              const [x1, y1, z1] = getPosition(angle1, radiusOsc, waveOsc, useSinOsc, time, i * 2, formType, waveMultOsc / 5, noiseAmpOsc, asymX, asymY, subWaveOsc);
+              const [x2, y2, z2] = getPosition(angle2, radiusOsc, waveOsc, useSinOsc, time, i * 2 + 1, formType, waveMultOsc / 5, noiseAmpOsc, asymX, asymY, subWaveOsc);
+              positions[i * 6 + 0] = x1; positions[i * 6 + 1] = y1; positions[i * 6 + 2] = z1;
+              positions[i * 6 + 3] = x2; positions[i * 6 + 4] = y2; positions[i * 6 + 5] = z2;
+              let baseColor1 = new THREE.Color();
+              const rotatedAngle1 = angle1 + Math.sin(time * 0.5 + i * 0.01) * 0.2;
+              let hue1 = baseHue + hueShift1 + (rotatedAngle1 / (Math.PI * 2)) * 0.2 + Math.sin(time * 0.005 + i * 0.05) * 0.1;
+              hue1 = ((hue1 % 1 + 1) % 1) + formBias;
+              const waveHueMod1 = Math.sin(rotatedAngle1 * waveOsc) * 0.2;
+              baseColor1.setHSL(hue1 + waveHueMod1, sat, lit);
+              if (i === 0) {
+                  if (Math.floor(time / 50) !== Math.floor((time-1) / 50)) {
+                      console.log('Vertex0 RGB:', baseColor1.r.toFixed(2), baseColor1.g.toFixed(2), baseColor1.b.toFixed(2));
+                  }
+              }
+              let baseColor2 = new THREE.Color();
+              const rotatedAngle2 = angle2 + Math.sin(time * 0.5 + (i * 2 + 1) * 0.01) * 0.2;
+              let hue2 = baseHue + hueShift1 + (rotatedAngle2 / (Math.PI * 2)) * 0.2 + Math.sin(time * 0.005 + (i * 2 + 1) * 0.05) * 0.1;
+              hue2 = ((hue2 % 1 + 1) % 1) + formBias;
+              const waveHueMod2 = Math.sin(rotatedAngle2 * waveOsc) * 0.2;
+              baseColor2.setHSL(hue2 + waveHueMod2, sat * (0.9 + 0.2 * Math.sin(i * 0.1)), lit);
+              colorsArray[i * 6 + 0] = baseColor1.r; colorsArray[i * 6 + 1] = baseColor1.g; colorsArray[i * 6 + 2] = baseColor1.b;
+              colorsArray[i * 6 + 3] = baseColor2.r; colorsArray[i * 6 + 4] = baseColor2.g; colorsArray[i * 6 + 5] = baseColor2.b;
+          }
+      }
+      updateForm(0);
+      geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geometry.setAttribute('color', new THREE.BufferAttribute(colorsArray, 3));
+      const lineMaterial = new THREE.LineBasicMaterial({ 
+          vertexColors: true, 
+          linewidth: 4, 
+          transparent: true,
+          opacity: 0.9 
+      });
+      const lineSegments = new THREE.LineSegments(geometry, lineMaterial);
+      scene.add(lineSegments);
+      camera.position.z = 4;
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+      scene.add(ambientLight);
+      const pointLight = new THREE.PointLight(0xffffff, 0.5, 10);
+      pointLight.position.set(0, 0, 2);
+      scene.add(pointLight);
+      function animate() {
+          requestAnimationFrame(animate);
+          time += 1;
+          lineSegments.rotation.x += 0.008;
+          lineSegments.rotation.y += 0.008;
+          lineSegments.rotation.z += 0.003 * Math.sin(time * timeSpeed * 10);
+          const globalScale = 0.95 + 0.1 * Math.sin(time * timeSpeed * 5);
+          lineSegments.scale.setScalar(globalScale);
+          lineMaterial.opacity = 0.8 + 0.2 * Math.sin(time * timeSpeed * 3);
+          updateForm(time * timeSpeed);
+          geometry.attributes.position.needsUpdate = true;
+          geometry.attributes.color.needsUpdate = true;
+          renderer.render(scene, camera);
+      }
+      animate();
+      window.addEventListener('resize', () => {
+          camera.aspect = window.innerWidth / window.innerHeight;
+          camera.updateProjectionMatrix();
+          renderer.setSize(window.innerWidth, window.innerHeight);
+      });
     </script>
     </div>
     <div class="overlay">
