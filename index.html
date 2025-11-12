@@ -264,15 +264,15 @@
     z-index: 4;
 }
     .btn {
-      background-color: transparent;
+      background-color: var(--bg);
       font-family: 'Lato', sans-serif;
       font-size: 16px;
-      line-height: 12px;
+      line-height: 20px;
       font-weight: 300;
-      padding: 4px 12px;
+      padding: 16px 32px;
       border: 1px solid var(--text);
-      color: var(--myinterface); 
-      border-radius: 0px;
+      color: var(--text); 
+      border-radius: 0 0 0 20px;
       box-sizing: border-box;
       cursor: pointer;
       animation: fadeIn 0.8s ease forwards;
@@ -282,8 +282,8 @@
       border: 1px solid var(--accent);
     }
     .btn:active {
-      border: 1px solid var(--accent);
-      color: var(--accent);
+      border: 1px solid var(--myinterface);
+      color: var(--myinterface);
     }
     .modal {
     display: none;
@@ -311,7 +311,7 @@
     text-align: center;
 }
 .close {
-    color: var(--myinterface);
+    color: var(--accent);
     float: right;
     font-size: 32px;
     font-family: 'Lato', sans-serif;
@@ -320,7 +320,7 @@
 }
 .close:hover,
 .close:focus {
-    color: var(--accent);
+    color: var(--myinterface);
     text-decoration: none;
     cursor: pointer; 
 }
@@ -666,15 +666,15 @@
     z-index: 4;
 }
     .btn {
-      background-color: transparent;
+      background-color: var(--bg);
       font-family: 'Lato', sans-serif;
       font-size: 16px;
-      line-height: 12px;
+      line-height: 20px;
       font-weight: 300;
-      padding: 4px 12px;
+      padding: 16px 32px;
       border: 1px solid var(--text);
-      color: var(--myinterface); 
-      border-radius: 0px;
+      color: var(--text); 
+      border-radius: 0 0 0 20px;
       box-sizing: border-box;
       cursor: pointer;
       animation: fadeIn 0.8s ease forwards;
@@ -684,8 +684,8 @@
       border: 1px solid var(--accent);
     }
     .btn:active {
-      border: 1px solid var(--accent);
-      color: var(--accent);
+      border: 1px solid var(--myinterface);
+      color: var(--myinterface);
     }
     .modal {
     display: none;
@@ -713,7 +713,7 @@
     text-align: center;
 }
 .close {
-    color: var(--myinterface);
+    color: var(--accent);
     float: right;
     font-size: 32px;
     font-family: 'Lato', sans-serif;
@@ -722,7 +722,7 @@
 }
 .close:hover,
 .close:focus {
-    color: var(--accent);
+    color: var(--myinterface);
     text-decoration: none;
     cursor: pointer; 
 }
@@ -1035,7 +1035,7 @@
         <div class="artist">SPEED MODE</div>
     </div>
         <div class="button-container">
-          <button class="btn">Списки</button>
+          <button class="btn">—> Списки</button>
         </div> 
         <div class="price">500 ₽</div>
         <div class="fc">18+</div>
