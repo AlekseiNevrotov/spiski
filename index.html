@@ -291,9 +291,9 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(18, 18, 18);
+    background-color: var(--bg);
     color: var(--text);
-    border: 1px solid var(--black2);
+    border: 8px solid var(--myinterface);
     border-radius: 0px;
     height: 500px;
     width: 340px;
@@ -332,29 +332,17 @@
         h1 {
             text-align: center;
             color: var(--mylogo);
-            
-            
-            
-            margin-top: 40px;
-            
-            margin-bottom: 32px;
-            color: var(--accent);
-      top: 100px;
-      margin-top: 8px;
-      margin-left: 20px;
-      font-family: 'Lato', sans-serif;
-      font-weight: 300;
-      text-align: left;
-      font-size: 20px;
-      line-height: 16px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 300;
+            font-size: 20px;
+            line-height: 24px;
         }
         .inline-form {
-            max-width: 400px;
             margin: auto;
-            background: var(--form);
+            background: var(--bg);
             border-radius: 20px; 
-            padding: 28px; 
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 12px; 
+            box-shadow: 0 4px 12px var(--myinterface);
             position: relative;
             width: 100%;
         }
@@ -368,7 +356,7 @@
             padding: 16px 16px; 
             background: var(--input); 
             color: var(--black); 
-            border: 1px solid var(--form); 
+            border: 1px solid var(--grey); 
             border-radius: 24px; 
             font-size: 20px;
             font-weight: 300;
@@ -387,7 +375,7 @@
         .inline-form form button[type="submit"] {  
             width: 100%;
             height: 52px;
-            color: var(--form); 
+            color: var(--bg); 
             padding: 0;
             line-height: 20px;
             padding: 16px 32px;
